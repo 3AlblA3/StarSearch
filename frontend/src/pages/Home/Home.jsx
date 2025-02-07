@@ -10,53 +10,56 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const navigate = useNavigate();
 
+  
+
   const handleSearch = async () => {
     setLoading(true);
-
-    // Fetch de toutes les entités
     try {
       const response = await fetch(`http://localhost:3000/search-all`, {
         method: "GET",
         credentials: "include",
       });
-
+  
       const data = await response.json();
       let filteredResults = [];
-
-      // Si on fait une recherche globale, afficher tout les élémeents
+  
       if (category === "all") {
         Object.keys(data).forEach((key) => {
           if (data[key]?.results) {
-            data[key].results.forEach((item, index) => {
-              filteredResults.push({ ...item, category: key, index: index + 1 });
+            data[key].results.forEach((item) => {
+              // ✅ Extract the real SWAPI ID from the "url" field
+              const realId = item.url.match(/\/(\d+)\/$/)[1];
+              filteredResults.push({ ...item, category: key, id: realId });
             });
           }
         });
-        // Sinon, afficher par catégorie
       } else {
-        filteredResults =
-          data[category]?.results?.map((item, index) => ({
-            ...item,
-            category,
-            index: index + 1,
-          })) || [];
+        filteredResults = data[category]?.results?.map((item) => {
+          const realId = item.url.match(/\/(\d+)\/$/)[1];
+          return { ...item, category, id: realId };
+        }) || [];
       }
-
-      // On filtre les éléments par noms ou par titre 
+  
       const finalResults = filteredResults.filter(
         (item) =>
           item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.title?.toLowerCase().includes(searchTerm.toLowerCase())
       );
-
+  
       setResults(finalResults);
     } catch (error) {
       console.error("Search error:", error);
     }
-
+  
     setLoading(false);
     setHasSearched(true);
   };
+  
+
+  // Filtrer les résultats dynamiquement avec le select roll
+  const displayedResults = category === "all"
+    ? results
+    : results.filter((item) => item.category === category);
 
   return (
     <div className={styles.container}>
@@ -68,7 +71,11 @@ export default function Home() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className={styles.input}
         />
-        <select value={category} onChange={(e) => setCategory(e.target.value)} className={styles.select}>
+        <select 
+          value={category} 
+          onChange={(e) => setCategory(e.target.value)} 
+          className={styles.select}
+        >
           <option value="all">All Categories</option>
           <option value="people">People</option>
           <option value="planets">Planets</option>
@@ -85,18 +92,18 @@ export default function Home() {
       {loading ? <p>Loading at light speed...</p> : null}
 
       <div className={styles.resultsContainer}>
-        {results.length > 0 ? (
-          results.map((item) => (
+        {displayedResults.length > 0 ? (
+          displayedResults.map((item) => (
             <div
-              key={item.index}
+              key={item.id} // ✅ Use real SWAPI ID instead of index
               className={styles.card}
-              onClick={() => navigate(`/details/${item.category}/${item.index}`)}
+              onClick={() => navigate(`/details/${item.category}/${item.id}`)} // ✅ Use correct ID
             >
               <h3>{item.name || item.title}</h3>
               <p>Click for more details</p>
             </div>
           ))
-        ) : hasSearched ? ( 
+        ) : hasSearched ? (
           <p>No results found.</p>
         ) : null}
       </div>

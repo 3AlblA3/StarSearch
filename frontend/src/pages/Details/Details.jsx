@@ -20,25 +20,24 @@
       
           const data = await response.json();
       
-          // Fields that contain URLs
+          // Champs qui contiennent des URL
           const keysToExpand = ["homeworld", "films", "species", "vehicles",
             "starships", "people", "residents", "planets", "characters"];
           
           const updatedData = { ...data };
       
-          // Fetch all linked data
+          // Fetch des links pour afficher le titre
           await Promise.all(
             keysToExpand.map(async (key) => {
               if (data[key]) {
                 if (Array.isArray(data[key])) {
-                  // ✅ Fetch all linked items in an array
+                  // Arrange les résultats de la recherche dans un tableau
                   const results = await Promise.all(data[key].map((url) => fetch(url).then((res) => res.json())));
                   updatedData[key] = results.map((item, index) => ({
                     name: item.name || item.title,
-                    url: data[key][index] // ✅ Ensure we keep the original URL
+                    url: data[key][index] // On s'assurre qu'on garde bien l'URL original
                   }));
                 } else {
-                  // ✅ Ensure we store an object with `name` and `url`
                   const result = await fetch(data[key]).then((res) => res.json());
                   updatedData[key] = { name: result.name || result.title, url: data[key] };
                 }
@@ -57,6 +56,7 @@
       fetchDetails();
     }, [category, id]);
 
+    // Extraction de l'index par l'url
     const extractIdFromUrl = (url) => {
       const match = url.match(/\/(\d+)\/$/);
       return match ? match[1] : null;
@@ -71,13 +71,13 @@
     <h1 className={styles.title}>{details.name || details.title}</h1>
     <div className={styles.detailsCard}>
       {Object.entries(details).map(([key, value]) => {
-        if (["created", "edited", "url"].includes(key)) return null; // Hide unnecessary fields
+        if (["created", "edited", "url"].includes(key)) return null; // Cache les champs disgracieux
 
         return (
           <p key={key} className={styles.detail}>
             <span className={styles.label}>{key.replace(/_/g, " ").toUpperCase()}:</span>{" "}
             {Array.isArray(value) ? (
-              value.length > 0 ? ( // ✅ Ensure array is not empty
+              value.length > 0 ? ( 
                 value.map((item, index) =>
                   item.url ? (
                     <Link key={index} to={`/details/${item.url.split("/")[4]}/${extractIdFromUrl(item.url)}`} className={styles.link}>
@@ -88,10 +88,10 @@
                   )
                 ).reduce((prev, curr) => [prev, ", ", curr])
               ) : (
-                "None" // ✅ Show "None" if the array is empty
+                "None" 
               )
             ) : value.url ? (
-              // ✅ Handle single linked values
+              
               <Link to={`/details/${value.url.split("/")[4]}/${extractIdFromUrl(value.url)}`} className={styles.link}>
                 {value.name}
               </Link>
@@ -104,4 +104,4 @@
     </div>
   </div>
 );
-  }
+}

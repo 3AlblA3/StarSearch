@@ -55,3 +55,6 @@
   text-shadow: 0 0 10px #ffcc00;
   color: #ffffff;
 }
+@media (max-width: 600px) {
+  .title {font-size:1.5rem}
+}
