@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  font-family: 'Orbitron', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background: url("space-bg.webp") no-repeat center center fixed;
+  background-size: cover;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #f39c12;
+  text-decoration: none;
+  transition: 0.3s;
+}
+a:hover {
+  color: #ffcc00;
+}
+
+body {
+  padding-top: 10rem; /* ✅ Push content below the fixed header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  text-shadow: 0 0 10px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12;
+}
+
+button {
+  border-radius: 8px;
+  border: 2px solid #f39c12;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background: linear-gradient(45deg, #f39c12, #ff5733);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  border-color: #ffcc00;
+  box-shadow: 0 0 20px #f39c12;
+  transform: scale(1.05);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffcc00;
+  background: black;
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #ffffff;
+    background: url("/space-bg.webp") no-repeat center center fixed;
+    background-size: cover;
+  }
+  a:hover {
+    color: #ffcc00;
+  }
+  button {
+    background: linear-gradient(45deg, #f39c12, #ff5733);
+  }
+}

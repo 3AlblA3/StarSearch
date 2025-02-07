@@ -1,0 +1,57 @@
+.container {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0 20px #f39c12;
+  margin: auto;
+  width: 75%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  text-shadow: 0 0 50px #fff, 0 0 10px #f39c12;
+  margin-bottom: 20px;
+}
+
+.detailsCard {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  width: 75%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.detail {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #ffffff;
+}
+
+.label {
+  font-weight: bold;
+  color: #ffffff;
+  
+}
+
+.link {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.link:hover {
+  text-shadow: 0 0 10px #ffcc00;
+  color: #ffffff;
+}
