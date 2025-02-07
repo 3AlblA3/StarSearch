@@ -20,7 +20,7 @@
       
           const data = await response.json();
       
-          // Champs qui contiennent des URL
+          // Champs qui contiennent des URL des autres entités
           const keysToExpand = ["homeworld", "films", "species", "vehicles",
             "starships", "people", "residents", "planets", "characters"];
           
@@ -35,7 +35,7 @@
                   const results = await Promise.all(data[key].map((url) => fetch(url).then((res) => res.json())));
                   updatedData[key] = results.map((item, index) => ({
                     name: item.name || item.title,
-                    url: data[key][index] // On s'assurre qu'on garde bien l'URL original
+                    url: data[key][index] // On s'assure qu'on garde bien l'URL original
                   }));
                 } else {
                   const result = await fetch(data[key]).then((res) => res.json());
@@ -56,12 +56,13 @@
       fetchDetails();
     }, [category, id]);
 
-    // Extraction de l'index par l'url
+    // Extraction de l'id par l'url de SWAPI
     const extractIdFromUrl = (url) => {
       const match = url.match(/\/(\d+)\/$/);
       return match ? match[1] : null;
     };
 
+    // Loading
     if (loading) return <p className={styles.loading}>Loading at light speed...</p>;
     if (error) return <p className={styles.error}>Error: {error}</p>;
     if (!details) return <p>No details found.</p>;
